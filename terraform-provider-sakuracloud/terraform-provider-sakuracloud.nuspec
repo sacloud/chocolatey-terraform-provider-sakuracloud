@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <!-- == PACKAGE SPECIFIC SECTION == -->
+    <id>terraform-provider-sakuracloud</id>
+    <version>__VERSION__</version>
+    <owners>223n (@223n)</owners>
+    <!-- ============================== -->
+
+    <!-- == SOFTWARE SPECIFIC SECTION == -->
+    <title>terraform-provider-sakuracloud (Install)</title>
+    <authors>Kazumichi Yamamoto (@yamamoto-febc)</authors>
+    <projectUrl>https://github.com/sacloud/terraform-provider-sakuracloud</projectUrl>
+    <!--<projectSourceUrl>https://github.com/sacloud/terraform-provider-sakuracloud</projectSourceUrl>-->
+    <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/terraform-provider-sakuracloud.png</iconUrl>-->
+    <copyright>Kazumichi Yamamoto (@yamamoto-febc)</copyright>
+    <licenseUrl>https://github.com/sacloud/terraform-provider-sakuracloud/blob/master/LICENSE</licenseUrl>
+    <docsUrl>https://sacloud.github.io/terraform-provider-sakuracloud/</docsUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <packageSourceUrl>https://github.com/sacloud/chocolatey</packageSourceUrl>
+    <!--<mailingListUrl></mailingListUrl>-->
+    <!--<bugTrackerUrl></bugTrackerUrl>-->
+    <tags>terraform sakuracloud provider</tags>
+    <summary>Terraform for Sakura Cloud</summary>
+    <description>
+# EN
+  - It is a plug-in for operating SAKURA cloud from Terraform.
+  - This plug-in is developed by SAKURA cloud user communication as SAKURA Internet Inc. official recognition tool.
+
+----
+
+# JP
+  - Terraformからさくらのクラウドを操作するためのプラグインです。
+  - このプラグインはさくらインターネット公認ツールとしてさくらのクラウドユーザコミュニティによって開発されています。
+    </description>
+    <releaseNotes>
+# EN
+
+## Remarks
+  - For details, please check CHANGELOG (Japanese) of GitHub.
+  - https://github.com/sacloud/terraform-provider-sakuracloud/releases
+
+----
+
+# JP
+
+## Remarks
+  - 詳しくは、GitHubのCHANGELOG(日本語)をご確認ください。
+  - https://github.com/sacloud/terraform-provider-sakuracloud/releases
+    </releaseNotes>
+    <!-- =============================== -->      
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
