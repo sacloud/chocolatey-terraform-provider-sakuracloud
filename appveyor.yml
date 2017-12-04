@@ -22,8 +22,7 @@ install:
 ##############################################
 
 build:
-  -
-    ps: |
+  - ps: |
       # Set values
       echo "Start deploy script ..";
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/terraform-provider-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
@@ -55,8 +54,7 @@ build:
 ##############################################
 
 test:
-  -
-    ps: |
+  - ps: |
       # Check Install
       $packName = 'terraform-provider-sakuracloud';
       choco install $packName -s .\ -f;
@@ -66,8 +64,7 @@ test:
 ##############################################
 
 deploy_script:
-  -
-    ps: |
+  - ps: |
       # Push nupkg file
       $nupkgName        = (Get-ChildItem * -Include *.nupkg).Name;
       Push-AppveyorArtifact $nupkgName;
