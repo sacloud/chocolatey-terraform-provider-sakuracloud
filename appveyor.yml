@@ -1,68 +1,47 @@
 # AppVeyor file
 #   for Terraform Provider Sakuracloud
 
-version: 1.0.0.{build}
-
-branches:
-  only:
-    - master
-
-skip_branch_with_pr: true
-
-##############################################
-# Environment Configuration
-##############################################
+version: '{build}'
 
 install:
-  # Install Git
-  - git clone https://github.com/sacloud/chocolatey-terraform-provider-sakuracloud
-
-##############################################
-# Build Configuration
-##############################################
-
-build: off
-
-##############################################
-# Test Configuration
-##############################################
-
-test: off
-
-##############################################
-# Deployment Configuration
-##############################################
-
-deploy_script:
   - ps: |
-      # Set values
-      echo "Start deploy script ..";
+      Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version;
+      $PSVersionTable;
+      git --version;
+
+build_script:
+  - ps: |
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/terraform-provider-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
-      $versionText      = "terraform-provider-sakuracloud version ... v" + $version;
-      echo $versionText;
-      $appVeyorVersion  = $version + ${env:APPVEYOR_BUILD_VERSION}.Replace("1.0.0", "");
+      $appVeyorVersion  = $version + '.' + ${env:APPVEYOR_BUILD_VERSION};
       set-item env:APPVEYOR_BUILD_VERSION -value $appVeyorVersion;
-      $versionText      = "package version ... v" + $appVeyorVersion;
+      $versionText      = "terraform-provider-sakuracloud version Ver." + $version;
       echo $versionText;
-      $zipX32           = 'terraform-provider-sakuracloud_' + $version + '_windows-386.zip';
-      $zipX64           = 'terraform-provider-sakuracloud_' + $version + '_windows-amd64.zip';
+      $versionText      = "package version Ver." + $appVeyorVersion;
+      echo $versionText;
       $url32            = 'https://github.com/sacloud/terraform-provider-sakuracloud/releases/download/v' + $version + '/terraform-provider-sakuracloud_' + $version + '_windows-386.zip';
       $url64            = 'https://github.com/sacloud/terraform-provider-sakuracloud/releases/download/v' + $version + '/terraform-provider-sakuracloud_' + $version + '_windows-amd64.zip';
-      # Download zip files
       Invoke-WebRequest $url32 -OutFile .\x32.zip;
       Invoke-WebRequest $url64 -OutFile .\x64.zip;
-      # Get hash values
       $hash32           = (Get-FileHash .\x32.zip -Algorithm SHA512).Hash;
       $hash64           = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash;
-      # Replace vlaues
       Set-Location -Path .\terraform-provider-sakuracloud;
       (Get-Content '.\terraform-provider-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\terraform-provider-sakuracloud.nuspec';
       (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__URL_32__", "$($url32)").Replace("__URL_64__", "$($url64)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
-      # Create chocolatey package
       choco pack;
-      # Check Install
+
+test_script:
+  - ps: |
       $packName = 'terraform-provider-sakuracloud';
       choco install $packName -s .\ -f;
-      # Push nupkg file
-      $nupkgName        = (Get-ChildItem * -Include *.nupkg).Name;
-      Push-AppveyorArtifact $nupkgName;
+      cuninst $packName;
+
+artifacts:
+  - path: '.\terraform-provider-sakuracloud\*.nupkg'
+  - path: '.\terraform-provider-sakuracloud\tools\*.ps1'
+  - path: '.\terraform-provider-sakuracloud\terraform-provider-sakuracloud.nuspec'
+
+# deploy_script:
+#   - ps: |
+#       $packName = 'terraform-provider-sakuracloud';
+#       choco apikey --key ${env:CHOCO_API_KEY} --source https://push.chocolatey.org/
+#       choco push $nupkgName --source https://push.chocolatey.org/
