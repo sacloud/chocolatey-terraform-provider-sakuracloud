@@ -36,11 +36,12 @@ test_script:
       cuninst $packName;
 
 artifacts:
-  - path: '.\usacloud\*.nupkg'
-  - path: '.\usacloud\tools\*.ps1'
-  - path: '.\usacloud\usacloud.nuspec'
+  - path: '.\terraform-provider-sakuracloud\*.nupkg'
+  - path: '.\terraform-provider-sakuracloud\tools\*.ps1'
+  - path: '.\terraform-provider-sakuracloud\terraform-provider-sakuracloud.nuspec'
 
 # deploy_script:
 #   - ps: |
+#       $packName = 'terraform-provider-sakuracloud';
 #       choco apikey --key ${env:CHOCO_API_KEY} --source https://push.chocolatey.org/
 #       choco push $nupkgName --source https://push.chocolatey.org/
