@@ -33,7 +33,7 @@ test_script:
   - ps: |
       $packName = 'terraform-provider-sakuracloud';
       choco install $packName -s .\ -f;
-      usacloud --version;
+      cuninst $packName;
 
 artifacts:
   - path: '.\usacloud\*.nupkg'
