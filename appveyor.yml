@@ -21,9 +21,20 @@ install:
 # Build Configuration
 ##############################################
 
-build:
-  -
-    ps: |
+build: off
+
+##############################################
+# Test Configuration
+##############################################
+
+test: off
+
+##############################################
+# Deployment Configuration
+##############################################
+
+deploy_script:
+  - ps: |
       # Set values
       echo "Start deploy script ..";
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/terraform-provider-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
@@ -49,25 +60,9 @@ build:
       (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__URL_32__", "$($url32)").Replace("__URL_64__", "$($url64)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
       # Create chocolatey package
       choco pack;
-
-##############################################
-# Test Configuration
-##############################################
-
-test:
-  -
-    ps: |
       # Check Install
       $packName = 'terraform-provider-sakuracloud';
       choco install $packName -s .\ -f;
-
-##############################################
-# Deployment Configuration
-##############################################
-
-deploy_script:
-  -
-    ps: |
       # Push nupkg file
       $nupkgName        = (Get-ChildItem * -Include *.nupkg).Name;
       Push-AppveyorArtifact $nupkgName;
