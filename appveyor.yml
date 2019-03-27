@@ -13,6 +13,7 @@ build_script:
   - ps: |
       $version          = ((Invoke-RestMethod https://api.github.com/repos/sacloud/terraform-provider-sakuracloud/releases/latest)[0] -split ";" | Select-String "tag_name=").ToString().Trim().Replace("tag_name=v", "");
       $appVeyorVersion  = $version + '.' + ${env:APPVEYOR_BUILD_VERSION};
+      Update-AppveyorBuild -Version $appVeyorVersion
       set-item env:APPVEYOR_BUILD_VERSION -value $appVeyorVersion;
       $versionText      = "terraform-provider-sakuracloud version Ver." + $version;
       echo $versionText;
