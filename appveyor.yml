@@ -8,6 +8,8 @@ install:
       Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version;
       $PSVersionTable;
       git --version;
+      choco upgrade chocolatey -y;
+      choco -v;
 
 build_script:
   - ps: |
