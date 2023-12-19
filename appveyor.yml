@@ -17,9 +17,9 @@ build_script:
       $appVeyorVersion  = $version + '.' + ${env:APPVEYOR_BUILD_VERSION};
       Update-AppveyorBuild -Version $appVeyorVersion
       set-item env:APPVEYOR_BUILD_VERSION -value $appVeyorVersion;
-      $versionText      = "terraform-provider-sakuracloud version Ver." + $version;
+      $versionText      = "terraform-provider-sakuracloud version " + $version;
       echo $versionText;
-      $versionText      = "package version Ver." + $appVeyorVersion;
+      $versionText      = "package version " + $appVeyorVersion;
       echo $versionText;
       $url32            = 'https://github.com/sacloud/terraform-provider-sakuracloud/releases/download/v' + $version + '/terraform-provider-sakuracloud_' + $version + '_windows_386.zip';
       $url64            = 'https://github.com/sacloud/terraform-provider-sakuracloud/releases/download/v' + $version + '/terraform-provider-sakuracloud_' + $version + '_windows_amd64.zip';
@@ -28,8 +28,8 @@ build_script:
       $hash32           = (Get-FileHash .\x32.zip -Algorithm SHA512).Hash;
       $hash64           = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash;
       Set-Location -Path .\terraform-provider-sakuracloud;
-      (Get-Content '.\terraform-provider-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\terraform-provider-sakuracloud.nuspec';
-      (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__URL_32__", "$($url32)").Replace("__URL_64__", "$($url64)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1';
+      (Get-Content '.\terraform-provider-sakuracloud.nuspec' -Raw).Replace("__VERSION__", "$($appVeyorVersion)") | Out-File '.\terraform-provider-sakuracloud.nuspec' -Encoding utf8;
+      (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__URL_32__", "$($url32)").Replace("__URL_64__", "$($url64)").Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1' -Encoding utf8;
       choco pack;
 
 test_script:
