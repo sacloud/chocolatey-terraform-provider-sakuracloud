@@ -3,6 +3,11 @@
 
 version: '{build}'
 
+branches:
+  only:
+    - master
+    - /feature*/
+
 install:
   - ps: |
       Get-CimInstance win32_operatingsystem -Property Caption, OSArchitecture, Version | fl Caption, OSArchitecture, Version;
@@ -36,7 +41,7 @@ test_script:
   - ps: |
       $packName = 'terraform-provider-sakuracloud';
       choco install $packName -s .\ -f;
-      cuninst $packName;
+      choco uninstall $packName;
 
 artifacts:
   - path: '.\terraform-provider-sakuracloud\*.nupkg'
