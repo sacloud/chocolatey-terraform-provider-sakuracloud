@@ -67,6 +67,7 @@ $hash64 = (Get-FileHash .\x64.zip -Algorithm SHA512).Hash
 cd terraform-provider-sakuracloud
 (Get-Content '.\terraform-provider-sakuracloud.nuspec' -Raw).Replace("__VERSION__", $version) | Out-File '.\terraform-provider-sakuracloud.nuspec' -Encoding utf8NoBOM
 (Get-Content '.\tools\chocolateyinstall.ps1' -Raw).Replace("__URL_32__", $url32).Replace("__URL_64__", $url64).Replace("__HASH32__", $hash32).Replace("__HASH64__", $hash64) | Out-File '.\tools\chocolateyinstall.ps1' -Encoding utf8
+(Get-Content '.\tools\chocolateyuninstall.ps1' -Raw).Replace("__VERSION__", $version) | Out-File '.\tools\chocolateyuninstall.ps1' -Encoding utf8
 
 # パッケージ作成とテスト
 choco pack
